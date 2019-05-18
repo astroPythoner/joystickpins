@@ -135,7 +135,7 @@ class JoystickPins():
         self.name = joystick.get_name().strip()
         if mapping is not None:
             self.mapping = mapping
-        elif self.name == 'GPIO Controller 1' and 'Linux' in platform.platform():
+        elif self.name == 'GPIO Controller 1' and 'Linux' in platform.system():
             self.mapping = gpio_controller_linux_mapping
         elif self.name in joystick_mappings.keys():
             self.mapping = joystick_mappings[self.name]

@@ -2,8 +2,6 @@ import pygame as pg
 import platform
 from pygame import joystick
 
-print(platform.platform())
-
 #Pins-Mapping: (A, B, X, Y, SELECT, START, SHOULDER_LEFT, SHOULDER_RIGHT, AXIS_X, AXIS_Y)
 joystick_mappings = {
             'USB Gamepad' :       {
@@ -55,6 +53,17 @@ joystick_mappings = {
                 'AXIS_Y'    : 1   # -1 = oben,  +1 = unten
             },
         }
+
+gpio_controller_linux_mapping = {'A'         : 0,
+                                 'B'         : 1,
+                                 'X'         : 3,
+                                 'Y'         : 4,
+                                 'SELECT'    : 10,
+                                 'START'     : 11,
+                                 'SH_LEFT'   : 7,
+                                 'SH_RIGHT'  : 6,
+                                 'AXIS_X'    : 1,
+                                 'AXIS_Y'    : 2 }
 
 keyboard_stick_buttons = [
                 pg.K_RIGHT,         # A
@@ -126,6 +135,8 @@ class JoystickPins():
         self.name = joystick.get_name().strip()
         if mapping is not None:
             self.mapping = mapping
+        elif self.name == 'GPIO Controller 1' and 'Linux' in platform.platform():
+            self.mapping = gpio_controller_linux_mapping
         elif self.name in joystick_mappings.keys():
             self.mapping = joystick_mappings[self.name]
         else:

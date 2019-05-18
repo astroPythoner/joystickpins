@@ -34,6 +34,8 @@ UP = "up"
 DOWN = "down"
 LEFT = "left"
 RIGHT = "right"
+SHOULDER_LEFT = "shoulder left"
+SHOULDER_RIGHT = "shoulder right"
 SELECT= "select"
 START = "start"
 ESC = "esc"
@@ -77,10 +79,16 @@ class Game():
         # Überprüft ob die Taste(n) check_for gedrückt ist.
         for joystick in self.all_joysticks:
             if check_for == LEFT:
-                if joystick.get_axis_left() or joystick.get_shoulder_left():
+                if joystick.get_axis_left():
                     return joystick
             if check_for == RIGHT:
-                if joystick.get_axis_right() or joystick.get_shoulder_right():
+                if joystick.get_axis_right():
+                    return joystick
+            if check_for == SHOULDER_LEFT:
+                if joystick.get_shoulder_left():
+                    return joystick
+            if check_for == SHOULDER_RIGHT:
+                if joystick.get_shoulder_right():
                     return joystick
             if check_for == UP:
                 if joystick.get_axis_up():
@@ -165,7 +173,13 @@ class Game():
             self.pressed_button_texts.append("Left gedrückt (" + str(left.get_name()) + " , Achse:" + str(left._axis_x) + ")")
         right = self.check_key_pressed(RIGHT)
         if right != False:
-            self.pressed_button_texts.append("Right gedrückt (" + str(right.get_name()) + " , Achse:" + str(right._axis_x) + ")")
+            self.pressed_button_texts.append("Right gedrückt (" + str(right.get_name()) + " , Achse:" + str(right._axis_x) + ")")#
+        shouler_left = self.check_key_pressed(SHOULDER_LEFT)
+        if shouler_left != False:
+            self.pressed_button_texts.append("Schulter Left gedrückt (" + str(shouler_left.get_name()) + " , btn num:" + str(shouler_left._shoulder_left) + ")")
+        shoulder_right = self.check_key_pressed(SHOULDER_RIGHT)
+        if shoulder_right != False:
+            self.pressed_button_texts.append("Schulter Rechts gedrückt (" + str(shoulder_right.get_name()) + " , btn num:" + str(shoulder_right._shoulder_right) + ")")
         start = self.check_key_pressed(START)
         if start != False:
             self.pressed_button_texts.append("Start gedrückt (" + str(start.get_name()) + " , btn num:" + str(start._start) + ")")

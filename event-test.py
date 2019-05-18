@@ -134,6 +134,7 @@ class Game():
                     self.running = False
 
             # Gedrückte Tasten erkennen und auf dem Display anzeigen
+            self.detect_presses()
             self.draw_display()
 
             # Nachdem alles gezeichnet ist anzeigen

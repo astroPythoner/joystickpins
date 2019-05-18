@@ -1,5 +1,8 @@
 import pygame as pg
+import platform
 from pygame import joystick
+
+print(platform.platform())
 
 #Pins-Mapping: (A, B, X, Y, SELECT, START, SHOULDER_LEFT, SHOULDER_RIGHT, AXIS_X, AXIS_Y)
 joystick_mappings = {

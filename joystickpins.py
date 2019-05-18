@@ -62,8 +62,8 @@ usb_gamepad_linux_mapping = {'A'         : 1,
                             'START'     : 9,
                             'SH_LEFT'   : 4,
                             'SH_RIGHT'  : 5,
-                            'AXIS_X'    : 1,
-                            'AXIS_Y'    : 2}
+                            'AXIS_X'    : 0,
+                            'AXIS_Y'    : 1}
 
 keyboard_stick_buttons = [
                 pg.K_RIGHT,         # A
@@ -136,11 +136,14 @@ class JoystickPins():
         if mapping is not None:
             self.mapping = mapping
         elif self.name == 'USB Gamepad' and 'Linux' in platform.system():
+            print("Linux mapping")
             self.mapping = usb_gamepad_linux_mapping
         elif self.name in joystick_mappings.keys():
             self.mapping = joystick_mappings[self.name]
         else:
             self.mapping = {}
+        #print(self.mapping)
+
         self._A = self.mapping.get('A')
         self._B = self.mapping.get('B')
         self._X = self.mapping.get('X')

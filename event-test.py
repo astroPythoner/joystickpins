@@ -43,7 +43,7 @@ class Game():
     def __init__(self):
         self.running = True
 
-        self.pressed_button_texts = []
+        self.pressed_button_texts = ["Jetzt Taste auf deinem Controller drücken"]
 
         self.all_joysticks = []
         self.find_josticks()
@@ -155,16 +155,16 @@ class Game():
             self.pressed_button_texts.append("Y gedrückt (" + str(y.get_name())+" , btn num:"+str(y._Y)+")")
         up = self.check_key_pressed(UP)
         if up != False:
-            self.pressed_button_texts.append("Up gedrückt (" + str(up.get_name())+" , Achse"+str(up._axis_y)+")")
+            self.pressed_button_texts.append("Up gedrückt (" + str(up.get_name())+" , Achse:"+str(up._axis_y)+")")
         down = self.check_key_pressed(DOWN)
         if down != False:
-            self.pressed_button_texts.append("Down gedrückt (" + str(down.get_name())+" , Achse"+str(down._axis_y)+")")
+            self.pressed_button_texts.append("Down gedrückt (" + str(down.get_name())+" , Achse:"+str(down._axis_y)+")")
         left = self.check_key_pressed(LEFT)
         if left != False:
-            self.pressed_button_texts.append("Left gedrückt (" + str(left.get_name())+" , Achse"+str(left._axis_x)+")")
+            self.pressed_button_texts.append("Left gedrückt (" + str(left.get_name())+" , Achse:"+str(left._axis_x)+")")
         right = self.check_key_pressed(RIGHT)
         if right != False:
-            self.pressed_button_texts.append("Right gedrückt (" + str(right.get_name())+" , Achse"+str(right._axis_x)+")")
+            self.pressed_button_texts.append("Right gedrückt (" + str(right.get_name())+" , Achse:"+str(right._axis_x)+")")
         start = self.check_key_pressed(START)
         if start != False:
             self.pressed_button_texts.append("Start gedrückt (" + str(start.get_name())+" , btn num:"+str(start._start)+")")

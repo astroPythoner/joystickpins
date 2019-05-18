@@ -139,41 +139,44 @@ class Game():
             # Nachdem alles gezeichnet ist anzeigen
             pygame.display.flip()
 
-    def draw_display(self):
-        # Gedrückte Tasten erkennen und auf dem Display anzeigen
+    def detect_presses(self):
+        # Gedrückte Tasten erkennen
         a = self.check_key_pressed(A)
         if a != False:
-            self.pressed_button_texts.append("A gedrückt ("+str(a.get_name())+" , btn num:"+str(a._A)+")")
+            self.pressed_button_texts.append("A gedrückt (" + str(a.get_name()) + " , btn num:" + str(a._A) + ")")
         b = self.check_key_pressed(B)
         if b != False:
-            self.pressed_button_texts.append("B gedrückt (" + str(b.get_name())+" , btn num:"+str(b._B)+")")
+            self.pressed_button_texts.append("B gedrückt (" + str(b.get_name()) + " , btn num:" + str(b._B) + ")")
         x = self.check_key_pressed(X)
         if x != False:
-            self.pressed_button_texts.append("X gedrückt (" + str(x.get_name())+" , btn num:"+str(x._X)+")")
+            self.pressed_button_texts.append("X gedrückt (" + str(x.get_name()) + " , btn num:" + str(x._X) + ")")
         y = self.check_key_pressed(Y)
         if y != False:
-            self.pressed_button_texts.append("Y gedrückt (" + str(y.get_name())+" , btn num:"+str(y._Y)+")")
+            self.pressed_button_texts.append("Y gedrückt (" + str(y.get_name()) + " , btn num:" + str(y._Y) + ")")
         up = self.check_key_pressed(UP)
         if up != False:
-            self.pressed_button_texts.append("Up gedrückt (" + str(up.get_name())+" , Achse:"+str(up._axis_y)+")")
+            self.pressed_button_texts.append("Up gedrückt (" + str(up.get_name()) + " , Achse:" + str(up._axis_y) + ")")
         down = self.check_key_pressed(DOWN)
         if down != False:
-            self.pressed_button_texts.append("Down gedrückt (" + str(down.get_name())+" , Achse:"+str(down._axis_y)+")")
+            self.pressed_button_texts.append("Down gedrückt (" + str(down.get_name()) + " , Achse:" + str(down._axis_y) + ")")
         left = self.check_key_pressed(LEFT)
         if left != False:
-            self.pressed_button_texts.append("Left gedrückt (" + str(left.get_name())+" , Achse:"+str(left._axis_x)+")")
+            self.pressed_button_texts.append("Left gedrückt (" + str(left.get_name()) + " , Achse:" + str(left._axis_x) + ")")
         right = self.check_key_pressed(RIGHT)
         if right != False:
-            self.pressed_button_texts.append("Right gedrückt (" + str(right.get_name())+" , Achse:"+str(right._axis_x)+")")
+            self.pressed_button_texts.append("Right gedrückt (" + str(right.get_name()) + " , Achse:" + str(right._axis_x) + ")")
         start = self.check_key_pressed(START)
         if start != False:
-            self.pressed_button_texts.append("Start gedrückt (" + str(start.get_name())+" , btn num:"+str(start._start)+")")
+            self.pressed_button_texts.append("Start gedrückt (" + str(start.get_name()) + " , btn num:" + str(start._start) + ")")
         select = self.check_key_pressed(SELECT)
         if select != False:
-            self.pressed_button_texts.append("Select gedrückt (" + str(select.get_name())+" , btn num:"+str(select._select)+")")
+            self.pressed_button_texts.append("Select gedrückt (" + str(select.get_name()) + " , btn num:" + str(select._select) + ")")
 
         while len(self.pressed_button_texts) > 15:
             del self.pressed_button_texts[0]
+
+    def draw_display(self):
+        # Auf dem Display anzeigen
         for num, text in enumerate(self.pressed_button_texts):
             self.draw_text(screen,text,30,WIDTH/2,num*40)
 

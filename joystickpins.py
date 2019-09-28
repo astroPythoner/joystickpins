@@ -54,7 +54,7 @@ joystick_mappings = {
             },
         }
 
-usb_gamepad_linux_mapping = {'A'         : 1,
+usb_gamepad_linux_mapping = {'A'        : 1,
                             'B'         : 2,
                             'X'         : 0,
                             'Y'         : 3,
@@ -65,20 +65,41 @@ usb_gamepad_linux_mapping = {'A'         : 1,
                             'AXIS_X'    : 0,
                             'AXIS_Y'    : 1}
 
-keyboard_stick_buttons = [
-                pg.K_RIGHT,         # A
-                pg.K_DOWN,          # B
-                pg.K_UP,            # X
-                pg.K_LEFT,          # Y
-                pg.K_RETURN,        # SELECT
-                pg.K_SPACE,         # START
-                pg.K_q,             # SH_LEFT
-                pg.K_e,             # SH_RIGHT
-        ]
-keyboard_stick_axis = [
-                (pg.K_a, pg.K_d),   # X-Axis
-                (pg.K_w, pg.K_s)    # Y-Axis
-        ]
+keyboard_mappings = {
+            'Default' : {               # Matches best to the layout of Waveshare Game HAT
+                'Buttons' : [
+                    pg.K_RIGHT,         # A
+                    pg.K_DOWN,          # B
+                    pg.K_UP,            # X
+                    pg.K_LEFT,          # Y
+                    pg.K_RETURN,        # SELECT
+                    pg.K_SPACE,         # START
+                    pg.K_q,             # SH_LEFT
+                    pg.K_e,             # SH_RIGHT
+                ],
+                'Axis' : [
+                    (pg.K_a, pg.K_d),   # X-Axis
+                    (pg.K_w, pg.K_s)    # Y-Axis
+                ]
+            },
+            'Alt1' : {                  # Matches logically fine for using cursor keys for directions
+                'Buttons': [
+                    pg.K_d,             # A
+                    pg.K_s,             # B
+                    pg.K_w,             # X
+                    pg.K_a,             # Y
+                    pg.K_RETURN,        # SELECT
+                    pg.K_SPACE,         # START
+                    pg.K_q,             # SH_LEFT
+                    pg.K_e,             # SH_RIGHT
+                ],
+                'Axis': [
+                    (pg.K_LEFT, pg.K_RIGHT),  # X-Axis
+                    (pg.K_DOWN, pg.K_UP)  # Y-Axis
+                ]
+            }
+
+}
 
 # Joystick without any operation
 # Use this if you do not find a Joystick.
@@ -90,20 +111,27 @@ class NoStick():
     def get_axis(self, axis):
         return 0
 
+# get keyboard mappings
+def getKeyboardMappings():
+    return keyboard_mappings.keys()
+
 # Keyboard-Joystick replacement
 # Use this to simulate Joystick on KeyboardInterrupt.
-# keep in mind: there are no Joystick-events for this Joystick
+# keep in mind: there are no Joystick-events for this "Joystick"
 class KeyboardStick():
-    def __init__(self):
-        # TODO: custom mapping?
-        pass
+    def __init__(self, mapping = 'Default'):
+        self.setKeyboardMapping(mapping)
+
+    def setKeyboardMapping(self, mapping):
+        self._buttons = keyboard_mappings[mapping]['Buttons']
+        self._axis    = keyboard_mappings[mapping]['Axis']
 
     def get_name(self):
         return 'Keyboard Stick'
 
     def get_button(self, btn):
         keys = pg.key.get_pressed()
-        return keys[keyboard_stick_buttons[btn]]
+        return keys[self._buttons[btn]]
 
     def get_axis(self, axis):
         #print('get_axis {0}'.format(axis))
@@ -112,8 +140,8 @@ class KeyboardStick():
         keys = pg.key.get_pressed()
         #print('get_axis - keys: {0}'.format(keys))
         val = 0
-        pos1 = keys[keyboard_stick_axis[axis][0]]
-        pos2 = keys[keyboard_stick_axis[axis][1]]
+        pos1 = keys[self._axis[axis][0]]
+        pos2 = keys[self._axis[axis][1]]
         if pos1 and not pos2:
             val = -1
         elif pos2 and not pos1:
@@ -124,7 +152,7 @@ class KeyboardStick():
 # Encapsulates different Joystick-Button-Numberings.
 # Pass the pygame-Joystick to __init__ => the Pin-Mapping should be matched.
 # Pass None as Joystick to get a dummy without function.
-# Pass a KeyboardStick-bject to get a simulation via keyboard
+# Pass a KeyboardStick-object to get a simulation via keyboard
 class JoystickPins():
     def __init__(self, joystick, mapping = None):
         self.no_stick = joystick is None

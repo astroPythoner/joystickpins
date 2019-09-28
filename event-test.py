@@ -53,6 +53,7 @@ class Game():
     def find_josticks(self):
         # Knöpfe und Kontroller finden und Initialisieren
         self.all_joysticks = [JoystickPins(KeyboardStick())]
+#        self.all_joysticks = [JoystickPins(KeyboardStick('Alt1'))]
         for joy in range(pygame.joystick.get_count()):
             pygame_joystick = pygame.joystick.Joystick(joy)
             pygame_joystick.init()

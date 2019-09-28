@@ -1,6 +1,6 @@
 import pygame
 import time
-from joystickpins import JoystickPins, KeyboardStick
+from joystickpins import JoystickPins, KeyboardStick, MouseAddOnStick
 
 # Bildschrimgröße
 WIDTH = 480*2
@@ -52,14 +52,17 @@ class Game():
 
     def find_josticks(self):
         # Knöpfe und Kontroller finden und Initialisieren
-        self.all_joysticks = [JoystickPins(KeyboardStick())]
-#        self.all_joysticks = [JoystickPins(KeyboardStick('Alt1'))]
+        self.all_joysticks = []
+        #self.all_joysticks.append(JoystickPins(KeyboardStick()))
+        #self.all_joysticks.append(JoystickPins(KeyboardStick('Alt1')))
+        self.all_joysticks.append(JoystickPins(MouseAddOnStick()))
         for joy in range(pygame.joystick.get_count()):
             pygame_joystick = pygame.joystick.Joystick(joy)
             pygame_joystick.init()
             my_joystick = JoystickPins(pygame_joystick)
             self.all_joysticks.append(my_joystick)
             print("found_joystick: " + my_joystick.get_name())
+        print("joystick-count=", len(self.all_joysticks))
 
     def draw_text(self, surf, text, size, x, y, color=WHITE, rect_place="oben_mitte"):
         # Zeichnet den text in der color auf die surf.

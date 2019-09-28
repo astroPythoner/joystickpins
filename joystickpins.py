@@ -95,7 +95,7 @@ keyboard_mappings = {
                 ],
                 'Axis': [
                     (pg.K_LEFT, pg.K_RIGHT),  # X-Axis
-                    (pg.K_DOWN, pg.K_UP)  # Y-Axis
+                    (pg.K_UP, pg.K_DOWN)  # Y-Axis
                 ]
             }
 
@@ -123,8 +123,12 @@ class KeyboardStick():
         self.setKeyboardMapping(mapping)
 
     def setKeyboardMapping(self, mapping):
+        self._mapping = mapping
         self._buttons = keyboard_mappings[mapping]['Buttons']
         self._axis    = keyboard_mappings[mapping]['Axis']
+        
+    def get_mapping(self):
+        return self._mapping
 
     def get_name(self):
         return 'Keyboard Stick'

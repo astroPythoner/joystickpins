@@ -6,6 +6,12 @@ pygame add on to easier use controllers for games
 - platform
 
 # Verwendung
+Kopiere die read_me.py Datei als \_\_init\_\_.py in dein Projekt. Du kannst dann im Code deines Spiels mit diesen Zeilen joystickpins importieren. 
+```
+import __init__
+import joystickpins
+```
+
 ### So erstellt du einen neuen Kontroller:
 In der Schleife gehst du alle gefundenen Joysticks durch und initialisierst sie mit pygame. Danach gibts du den erstellten Joystick einem neuen Joystickpins objekt und kannst diesen dann verwenden.
 Willst du mehrere Joysticks unterstützen kannst du sie in ein Array legen.

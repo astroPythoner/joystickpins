@@ -1,3 +1,6 @@
+### Little pygame screen showing the events of a controller (just for testing)
+# pygame needs to be installed to run this script
+
 import pygame
 import time
 from joystickpins import JoystickPins, KeyboardStick
@@ -11,7 +14,7 @@ FPS = 60
 pygame.init()
 pygame.mixer.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Shmup!")
+pygame.display.set_caption("Event Test!")
 clock = pygame.time.Clock()
 
 # Farben
@@ -75,9 +78,11 @@ class Game():
             text_rect.topright = (x, y)
         surf.blit(text_surface, text_rect)
 
-    def check_key_pressed(self, check_for=ALL, joystick_num="both"):
+    def check_key_pressed(self, check_for=ALL, joysticks = None):
         # Überprüft ob die Taste(n) check_for gedrückt ist.
-        for joystick in self.all_joysticks:
+        if joysticks == None:
+            joysticks = self.all_joysticks
+        for joystick in joysticks:
             if check_for == LEFT:
                 if joystick.get_axis_left():
                     return joystick
@@ -122,17 +127,15 @@ class Game():
                     return joystick
         return False
 
-    ########## Hier startet das eigentliche Spiel ##########
     def start_game(self):
 
-        # Daurschleife des Spiels
+        # Daurschleife
         while self.running:
 
             # Bilschirm leeren
             screen.fill(BLACK)
 
-            # Auf Bildschirmgeschwindigkeit achten
-            self.time_diff = clock.tick(FPS) / 1000
+            print(self.all_joysticks)
 
             # Eingaben zum Verlassen des Spiels checken
             if self.check_key_pressed(ESC):
@@ -150,42 +153,54 @@ class Game():
 
     def detect_presses(self):
         # Gedrückte Tasten erkennen
-        a = self.check_key_pressed(A)
-        if a != False:
-            self.pressed_button_texts.append("A gedrückt (" + str(a.get_name()) + " , btn num:" + str(a._A) + ")")
-        b = self.check_key_pressed(B)
-        if b != False:
-            self.pressed_button_texts.append("B gedrückt (" + str(b.get_name()) + " , btn num:" + str(b._B) + ")")
-        x = self.check_key_pressed(X)
-        if x != False:
-            self.pressed_button_texts.append("X gedrückt (" + str(x.get_name()) + " , btn num:" + str(x._X) + ")")
-        y = self.check_key_pressed(Y)
-        if y != False:
-            self.pressed_button_texts.append("Y gedrückt (" + str(y.get_name()) + " , btn num:" + str(y._Y) + ")")
-        up = self.check_key_pressed(UP)
-        if up != False:
-            self.pressed_button_texts.append("Up gedrückt (" + str(up.get_name()) + " , Achse:" + str(up._axis_y) + ")")
-        down = self.check_key_pressed(DOWN)
-        if down != False:
-            self.pressed_button_texts.append("Down gedrückt (" + str(down.get_name()) + " , Achse:" + str(down._axis_y) + ")")
-        left = self.check_key_pressed(LEFT)
-        if left != False:
-            self.pressed_button_texts.append("Left gedrückt (" + str(left.get_name()) + " , Achse:" + str(left._axis_x) + ")")
-        right = self.check_key_pressed(RIGHT)
-        if right != False:
-            self.pressed_button_texts.append("Right gedrückt (" + str(right.get_name()) + " , Achse:" + str(right._axis_x) + ")")#
-        shouler_left = self.check_key_pressed(SHOULDER_LEFT)
-        if shouler_left != False:
-            self.pressed_button_texts.append("Schulter Left gedrückt (" + str(shouler_left.get_name()) + " , btn num:" + str(shouler_left._shoulder_left) + ")")
-        shoulder_right = self.check_key_pressed(SHOULDER_RIGHT)
-        if shoulder_right != False:
-            self.pressed_button_texts.append("Schulter Rechts gedrückt (" + str(shoulder_right.get_name()) + " , btn num:" + str(shoulder_right._shoulder_right) + ")")
-        start = self.check_key_pressed(START)
-        if start != False:
-            self.pressed_button_texts.append("Start gedrückt (" + str(start.get_name()) + " , btn num:" + str(start._start) + ")")
-        select = self.check_key_pressed(SELECT)
-        if select != False:
-            self.pressed_button_texts.append("Select gedrückt (" + str(select.get_name()) + " , btn num:" + str(select._select) + ")")
+        for joystick in self.all_joysticks:
+            if joystick.mapping != {}:
+                a = self.check_key_pressed(A)
+                if a != False:
+                    self.pressed_button_texts.append("A gedrückt (" + str(a.get_name()) + " , btn num:" + str(a._A) + ")")
+                b = self.check_key_pressed(B)
+                if b != False:
+                    self.pressed_button_texts.append("B gedrückt (" + str(b.get_name()) + " , btn num:" + str(b._B) + ")")
+                x = self.check_key_pressed(X)
+                if x != False:
+                    self.pressed_button_texts.append("X gedrückt (" + str(x.get_name()) + " , btn num:" + str(x._X) + ")")
+                y = self.check_key_pressed(Y)
+                if y != False:
+                    self.pressed_button_texts.append("Y gedrückt (" + str(y.get_name()) + " , btn num:" + str(y._Y) + ")")
+                up = self.check_key_pressed(UP)
+                if up != False:
+                    self.pressed_button_texts.append("Up gedrückt (" + str(up.get_name()) + " , Achse:" + str(up._axis_y) + ")")
+                down = self.check_key_pressed(DOWN)
+                if down != False:
+                    self.pressed_button_texts.append("Down gedrückt (" + str(down.get_name()) + " , Achse:" + str(down._axis_y) + ")")
+                left = self.check_key_pressed(LEFT)
+                if left != False:
+                    self.pressed_button_texts.append("Left gedrückt (" + str(left.get_name()) + " , Achse:" + str(left._axis_x) + ")")
+                right = self.check_key_pressed(RIGHT)
+                if right != False:
+                    self.pressed_button_texts.append("Right gedrückt (" + str(right.get_name()) + " , Achse:" + str(right._axis_x) + ")")#
+                shouler_left = self.check_key_pressed(SHOULDER_LEFT)
+                if shouler_left != False:
+                    self.pressed_button_texts.append("Schulter Links gedrückt (" + str(shouler_left.get_name()) + " , btn num:" + str(shouler_left._shoulder_left) + ")")
+                shoulder_right = self.check_key_pressed(SHOULDER_RIGHT)
+                if shoulder_right != False:
+                    self.pressed_button_texts.append("Schulter Rechts gedrückt (" + str(shoulder_right.get_name()) + " , btn num:" + str(shoulder_right._shoulder_right) + ")")
+                start = self.check_key_pressed(START)
+                if start != False:
+                    self.pressed_button_texts.append("Start gedrückt (" + str(start.get_name()) + " , btn num:" + str(start._start) + ")")
+                select = self.check_key_pressed(SELECT)
+                if select != False:
+                    self.pressed_button_texts.append("Select gedrückt (" + str(select.get_name()) + " , btn num:" + str(select._select) + ")")
+            else:
+                axes = joystick.joystick.get_numaxes()
+                for i in range(axes):
+                    if joystick.get_axis(i):
+                        self.pressed_button_texts.append("Achse gedrückt (undefined mapping; " + str(joystick.get_name()) + " , Achse:" + str(i) + ")")
+
+                buttons = joystick.joystick.get_numbuttons()
+                for i in range(buttons):
+                    if joystick.get_button(i):
+                        self.pressed_button_texts.append("Knopf gedrückt (undefined mapping; " + str(joystick.get_name()) + " , btn num:" + str(i) + ")")
 
         while len(self.pressed_button_texts) > 15:
             del self.pressed_button_texts[0]
@@ -194,6 +209,10 @@ class Game():
         # Auf dem Display anzeigen
         for num, text in enumerate(self.pressed_button_texts):
             self.draw_text(screen,text,30,WIDTH/2,num*40)
+        text = ""
+        for joystick in self.all_joysticks:
+            text += ", "+joystick.get_name()
+        self.draw_text(screen, str(len(self.all_joysticks))+" Joysticks:"+text[1:], 30, WIDTH / 2, HEIGHT-35)
 
 game = Game()
 game.start_game()

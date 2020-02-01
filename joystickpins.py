@@ -158,6 +158,7 @@ class JoystickPins():
     def get_name(self):
         return self.name
 
+    # get mapping values
     def A(self):
         return self._A
     def B(self):
@@ -179,26 +180,45 @@ class JoystickPins():
     def axis_y(self):
         return self._axis_y
 
+    # overwrite get_button method
     def get_button(self, idx):
         return self.joystick.get_button(idx)
 
+    # check wether button is pressed
     def get_A(self):
-        return self.joystick.get_button(self._A)
+        if self._A != None:
+            return self.joystick.get_button(self._A)
+        return None
     def get_B(self):
-        return self.joystick.get_button(self._B)
+        if self._B != None:
+            return self.joystick.get_button(self._B)
+        return None
     def get_X(self):
-        return self.joystick.get_button(self._X)
+        if self._X != None:
+            return self.joystick.get_button(self._X)
+        return None
     def get_Y(self):
-        return self.joystick.get_button(self._Y)
+        if self._Y != None:
+            return self.joystick.get_button(self._Y)
+        return None
     def get_select(self):
-        return self.joystick.get_button(self._select)
+        if self._select != None:
+            return self.joystick.get_button(self._select)
+        return None
     def get_start(self):
-        return self.joystick.get_button(self._start)
+        if self._start != None:
+            return self.joystick.get_button(self._start)
+        return None
     def get_shoulder_left(self):
-        return self.joystick.get_button(self._shoulder_left)
+        if self._shoulder_left != None:
+            return self.joystick.get_button(self._shoulder_left)
+        return None
     def get_shoulder_right(self):
-        return self.joystick.get_button(self._shoulder_right)
+        if self._shoulder_right != None:
+            return self.joystick.get_button(self._shoulder_right)
+        return None
 
+    # overwrite get_axis method
     def get_axis(self, axis):
         val = self.joystick.get_axis(axis)
         result = 0
@@ -208,15 +228,25 @@ class JoystickPins():
             result = 1
         return result
 
+    # check wether button is moved
     def get_axis_left(self):
-        return self.joystick.get_axis(self._axis_x) < -0.9
+        if self._axis_x != None:
+            return self.joystick.get_axis(self._axis_x) < -0.9
+        return None
     def get_axis_right(self):
-        return self.joystick.get_axis(self._axis_x) >  0.9
+        if self._axis_x != None:
+            return self.joystick.get_axis(self._axis_x) >  0.9
+        return None
     def get_axis_up(self):
-        return self.joystick.get_axis(self._axis_y) < -0.9
+        if self._axis_y != None:
+            return self.joystick.get_axis(self._axis_y) < -0.9
+        return None
     def get_axis_down(self):
-        return self.joystick.get_axis(self._axis_y) >  0.9
+        if self._axis_y != None:
+            return self.joystick.get_axis(self._axis_y) >  0.9
+        return None
 
+    # get axsis value -1, 0 or 1
     def get_axis_x(self):
         val = self.get_axis(self._axis_x)
     def get_axis_y(self):

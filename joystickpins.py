@@ -4,7 +4,7 @@ from pygame import joystick
 
 #Pins-Mapping: (A, B, X, Y, SELECT, START, SHOULDER_LEFT, SHOULDER_RIGHT, AXIS_X, AXIS_Y)
 joystick_mappings = {
-            'USB Gamepad' :       {
+            'USB Gamepad__Darwin': {
                 'A'         : 1,
                 'B'         : 2,
                 'X'         : 0,
@@ -16,7 +16,17 @@ joystick_mappings = {
                 'AXIS_X'    : 3,
                 'AXIS_Y'    : 4
             },
-            'GPIO Controller 1' : {
+            'USB Gamepad': {'A'        : 1,
+                            'B'         : 2,
+                            'X'         : 0,
+                            'Y'         : 3,
+                            'SELECT'    : 8,
+                            'START'     : 9,
+                            'SH_LEFT'   : 4,
+                            'SH_RIGHT'  : 5,
+                            'AXIS_X'    : 0,
+                            'AXIS_Y'    : 1},
+            'GPIO Controller 1': {
                 'A'         : 0,
                 'B'         : 1,
                 'X'         : 3,
@@ -28,7 +38,7 @@ joystick_mappings = {
                 'AXIS_X'    : 0,  # -1 = links, +1 = rechts
                 'AXIS_Y'    : 1   # -1 = oben,  +1 = unten
             },
-            'PLAYSTATION(R)3 Controller' : {
+            'PLAYSTATION(R)3 Controller': {
                 'A'         : 13,   # circle
                 'B'         : 14,   # cross
                 'X'         : 12,   # triangle
@@ -40,7 +50,7 @@ joystick_mappings = {
                 'AXIS_X'    : 0,  # -1 = links, +1 = rechts
                 'AXIS_Y'    : 1   # -1 = oben,  +1 = unten
             },
-            'Keyboard Stick' : {
+            'Keyboard Stick': {
                 'A'         : 0,   # circle
                 'B'         : 1,   # cross
                 'X'         : 2,   # triangle
@@ -65,17 +75,6 @@ joystick_mappings = {
                 'AXIS_Y': 1  # -1 = oben,  +1 = unten
             },
         }
-
-usb_gamepad_linux_mapping = {'A'        : 1,
-                            'B'         : 2,
-                            'X'         : 0,
-                            'Y'         : 3,
-                            'SELECT'    : 8,
-                            'START'     : 9,
-                            'SH_LEFT'   : 4,
-                            'SH_RIGHT'  : 5,
-                            'AXIS_X'    : 0,
-                            'AXIS_Y'    : 1}
 
 keyboard_mappings = {
             'Default' : {               # Matches best to the layout of Waveshare Game HAT
@@ -113,7 +112,7 @@ keyboard_mappings = {
 }
 
 mouse_keyboard_mappings = {
-            'Default' : {               #
+            'Default' : {
                 'Buttons' : [
                     pg.K_d,             # A
                     pg.K_s,             # B
@@ -209,7 +208,6 @@ class KeyboardStick(_DummyStick):
         self._buttons = keyboard_mappings[self._mapping]['Buttons']
         self._axis = keyboard_mappings[self._mapping]['Axis']
 
-
 class MouseAddOnStick(_DummyStick):
 
     def __init__(self, mapping = 'Default'):
@@ -218,7 +216,6 @@ class MouseAddOnStick(_DummyStick):
     def _apply_mapping(self):
         self._buttons = mouse_keyboard_mappings[self._mapping]['Buttons']
         self._axis = mouse_keyboard_mappings[self._mapping]['Axis']
-
 
 # Joystick-Pin-mapping
 # Encapsulates different Joystick-Button-Numberings.
@@ -235,13 +232,17 @@ class JoystickPins():
             self.joystick = joystick
 
         self.name = joystick.get_name().strip()
+        self.name_with_os = self.name+"__"+platform.system()
+        self.mapping_name = None
         if mapping is not None:
             self.mapping = mapping
-        elif self.name == 'USB Gamepad' and 'Linux' in platform.system():
-            print("Linux mapping")
-            self.mapping = usb_gamepad_linux_mapping
+            self.mapping_name = "own"
+        elif self.name_with_os in joystick_mappings.keys():
+            self.mapping = joystick_mappings[self.name_with_os]
+            self.mapping_name = self.name_with_os
         elif self.name in joystick_mappings.keys():
             self.mapping = joystick_mappings[self.name]
+            self.mapping_name = self.name
         else:
             self.mapping = {}
         #print(self.mapping)
@@ -353,3 +354,20 @@ class JoystickPins():
         val = self.get_axis(self._axis_x)
     def get_axis_y(self):
         val = self.get_axis(self._axis_y)
+
+if __name__ == '__main__':
+    pg.init()
+    print(platform.system())
+    print("joystick count=", pg.joystick.get_count(),"\n")
+    for joy in range(pg.joystick.get_count()):
+        pygame_joystick = pg.joystick.Joystick(joy)
+        pygame_joystick.init()
+        try:
+            my_joystick = JoystickPins(pygame_joystick)
+            print("found_joystick: " + my_joystick.get_name())
+            if my_joystick.mapping == None:
+                print("No mapping  Name:",my_joystick.name,", Name with os:",my_joystick.name_with_os,"\n")
+            else:
+                print("Mapping: ",my_joystick.mapping_name,":",my_joystick.mapping,"\n")
+        except Exception as e:
+            print(e)

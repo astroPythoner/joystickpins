@@ -3,7 +3,13 @@
 
 import pygame
 import time
-from joystickpins import JoystickPins, KeyboardStick, MouseAddOnStick
+try:
+    from joystickpins import JoystickPins, KeyboardStick, MouseAddOnStick
+except ImportError:
+    from joystickpins import joystickpins
+    JoystickPins = joystickpins.JoystickPins
+    KeyboardStick = joystickpins.KeyboardStick
+    MouseAddOnStick = joystickpins.MouseAddOnStick
 
 # Bildschrimgröße
 WIDTH = 480*2
@@ -58,7 +64,7 @@ class Game():
         self.all_joysticks = []
         #self.all_joysticks.append(JoystickPins(KeyboardStick()))
         #self.all_joysticks.append(JoystickPins(KeyboardStick('Alt1')))
-        self.all_joysticks.append(JoystickPins(MouseAddOnStick()))
+        self.all_joysticks.append(JoystickPins(KeyboardStick()))
         for joy in range(pygame.joystick.get_count()):
             pygame_joystick = pygame.joystick.Joystick(joy)
             pygame_joystick.init()
@@ -138,8 +144,6 @@ class Game():
 
             # Bilschirm leeren
             screen.fill(BLACK)
-
-            print(self.all_joysticks)
 
             # Eingaben zum Verlassen des Spiels checken
             if self.check_key_pressed(ESC):

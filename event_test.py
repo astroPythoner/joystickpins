@@ -12,8 +12,8 @@ except ImportError:
     MouseAddOnStick = joystickpins.MouseAddOnStick
 
 # Bildschrimgröße
-WIDTH = 480*2
-HEIGHT = 320*2
+WIDTH = 1000
+HEIGHT = 700
 FPS = 60
 
 # Pygame initialisieren und Fenster aufmachen
